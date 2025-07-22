@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت فروشگاه</title>
+  <link href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Vazir', sans-serif;
+      background-color: #f0fdf4;
+      padding: 1rem;
+      color: #1a3e2e;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #2e7d32;
+    }
+    .order-box {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    .order-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .order-box li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .no-orders {
+      text-align: center;
+      color: #999;
+      margin-top: 2rem;
+    }
+    #login-box {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 300px;
+      margin: 2rem auto;
+    }
+    #login-box input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    #login-box button {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>پنل مدیریت فروشگاه</h1>  <div id="login-box">
+    <input type="password" id="password" placeholder="رمز عبور">
+    <button onclick="checkPassword()">ورود</button>
+  </div>  <div id="orders" style="display:none"></div>  <script>
+    function checkPassword() {
+      const pass = document.getElementById("password").value;
+      if (pass === "admin123") {
+        document.getElementById("login-box").style.display = "none";
+        document.getElementById("orders").style.display = "block";
+        loadOrders();
+      } else {
+        alert("رمز عبور نادرست است.");
+      }
+    }
+
+    function loadOrders() {
+      const ordersContainer = document.getElementById("orders");
+      const orderData = JSON.parse(localStorage.getItem("orders"));
+
+      if (orderData && orderData.cart && orderData.cart.length > 0) {
+        const orderBox = document.createElement("div");
+        orderBox.className = "order-box";
+        const list = document.createElement("ul");
+
+        orderData.cart.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} - ${item.price.toLocaleString()} تومان`;
+          list.appendChild(li);
+        });
+
+        orderBox.appendChild(list);
+        ordersContainer.appendChild(orderBox);
+      } else {
+        ordersContainer.innerHTML = '<p class="no-orders">هنوز سفارشی ثبت نشده است.</p>';
+      }
+    }
+  </script></body>
+</html>
